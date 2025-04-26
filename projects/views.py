@@ -14,11 +14,30 @@ def index(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            subject = f"Message from {form.cleaned_data['name']}"
-            message = form.cleaned_data['message']
+            name = form.cleaned_data['name']
             sender = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            subject = f"Message from {name}"
+
+            full_message = f"""
+            You have received a new message from your portfolio website:
+
+            Name: {name}
+            Email: {sender}
+
+            Message:
+            {message}
+            """
+
             try:
-                send_mail(subject, message, sender, [settings.EMAIL_HOST_USER])
+                send_mail(
+                    subject,
+                    full_message,
+                    settings.EMAIL_HOST_USER,
+                    [settings.EMAIL_HOST_USER],
+                    fail_silently=False,
+                    headers={'Reply-To': sender}
+                )
                 messages.success(request, "Your message has been sent successfully!")
                 form = ContactForm()  # Clear the form after successful send
             except BadHeaderError:
@@ -53,4 +72,4 @@ def resume_view(request):
 
 
 
-    
+   
