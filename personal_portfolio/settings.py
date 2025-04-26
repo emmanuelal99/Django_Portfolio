@@ -36,7 +36,7 @@ if not os.getenv("DJANGO_SECRET_KEY") and not DEBUG:
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-fallback-secret")
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1, django-portfolio-9qrh.onrender.com').split(',')
+ALLOWED_HOSTS = 'django-portfolio-9qrh.onrender.com'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
