@@ -12,10 +12,13 @@ def index(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            subject = form.cleaned_data['subject']
-            message = form.cleaned_data['message']
+            cleaned_data = form.cleaned_data
+            print(cleaned_data)  # Temporary for debugging
+
+            name = cleaned_data.get('name', 'No Name')
+            email = cleaned_data.get('email', 'noemail@example.com')
+            subject = cleaned_data.get('subject', 'No Subject')
+            message = cleaned_data.get('message', '')
 
             # Send email
             send_mail(
@@ -28,8 +31,7 @@ def index(request):
 
             messages.success(request, 'Your message has been successfully sent!')
 
-            # Redirect to avoid form re-submission on page refresh
-            return redirect('index')  # Name of your urlpattern for the index view
+            return redirect('index')
 
     return render(request, 'projects/project/index.html', {'projects': projects, 'form': form})
 
