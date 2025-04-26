@@ -1,1 +1,2 @@
-# Django_Portfolio
+# personal_portfolio
+# django-portfolio
