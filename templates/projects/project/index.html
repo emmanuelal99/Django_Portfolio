@@ -87,38 +87,37 @@
         <h1 class="my-heading text-center">Featured Portfolio</h1>
     </div>
     <div class="portfolio-content">
-        <div class="my-row">
-            {% if projects %}
-                {% for project in projects %}
-                <div class="my-col">
-                    
-                    <div class="my-card port-card">
-                        {% if project.image %}
+       <div class="my-row">
+    {% if projects %}
+        {% for project in projects %}
+        <div class="my-col">  
+            <div class="my-card port-card">
+                {% if project.image %}
+                    <div class="image-container">
                         <img class="image" src="{{ project.image.url }}" 
-                        srcset="{{ project.image.url }} 500w, {{ project.image.url }} 1000w" 
-                        sizes="(max-width: 600px) 100vw, 50vw"
-                        alt="Image of {{ project.image }}" 
-                        style="width: 100%; height: 100px; object-fit: cover;">
-                        
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title">{{ project.title }}</h5>
-                            <p class="card-text">{{ project.description|truncatewords:20 }}</p>
-                            <a href="{% url 'project_detail' project.id %}" class="btn btn-primary" aria-label="View details of {{ project.title }}">Read More</a>
-
-
-                        </div>
+                             srcset="{{ project.image.url }} 500w, {{ project.image.url }} 1000w" 
+                             sizes="(max-width: 600px) 100vw, 50vw"
+                             alt="Image of {{ project.title }}" 
+                             style="width: 100%; height: 100px; object-fit: cover;">
                     </div>
+                {% else %}
+                    <div class="image-container">
+                        <p>No image available</p>
                     </div>
-                    
-                    
-               
-                {% endfor %}
-            {% else %}
-                <p class="text-center">No projects available at the moment.</p>
-            {% endif %}
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+                    <a href="{% url 'project_detail' project.id %}" class="btn btn-primary" aria-label="View details of {{ project.title }}">Read More</a>
+                </div>
             </div>
-            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center">No projects available at the moment.</p>
+    {% endif %}
+</div>
+ </div>
         
 
     
