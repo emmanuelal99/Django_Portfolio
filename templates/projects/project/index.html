@@ -85,38 +85,31 @@
     <div class="portfolio-heading">
         <h1 class="my-heading text-center">Featured Portfolio</h1>
     </div>
-    <div class="portfolio-content">
+		 <div class="portfolio-content">
         <div class="my-row">
             {% if projects %}
                 {% for project in projects %}
-                    <div class="my-col" style="margin-bottom: 20px;">
-                        <div class="my-card port-card" style="border: 1px solid #ddd; border-radius: 8px; padding: 20px;">
-                            {% if project.image %}
-                                <div class="image-container" style="width: 100%; height: 200px; overflow: hidden;">
-                                    <img class="image" src="{{ project.image.url }}" 
-                                         srcset="{{ project.image.url }} 500w, {{ project.image.url }} 1000w" 
-                                         sizes="(max-width: 600px) 100vw, 50vw"
-                                         alt="{{ project.image }}" 
-                                         style="width: 100%; height: 100%; object-fit: cover;">
-                                </div>
-                            {% else %}
-                                <div class="image-container" style="width: 100%; height: 100px; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                                    <p>No image available</p>
-                                </div>
-                            {% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title" style="font-size: 18px; margin-bottom: 10px;">{{ project.title }}</h5>
-                                <p class="card-text" style="font-size: 14px; margin-bottom: 10px;">{{ project.description|truncatewords:20 }}</p>
-                                <a href="{% url 'project_detail' project.id %}" class="btn btn-primary" aria-label="View details of {{ project.title }}">Read More</a>
-                            </div>
+                <div class="my-col">
+                    
+                    <div class="my-card port-card">
+                        {% if project.image %}
+                        <img class="image" src="{{ project.image.url }}"  alt="{{ project.image }}" style="width: 100%; height: 100px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.title }}</h5>
+                            <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+                            <a href="{% url 'project_detail' project.id %}" class="btn btn-primary">Read More</a>
+
                         </div>
                     </div>
+                </div>
                 {% endfor %}
             {% else %}
                 <p class="text-center">No projects available at the moment.</p>
             {% endif %}
         </div>
     </div>
+   
 </section>
 
  
