@@ -17,11 +17,11 @@ def index(request):
             message = form.cleaned_data['message']
 
             # Send email
-            send_mail(
-                f'New Contact from {name}',  # Subject line
-                message,                     # Message body
-                email,                       # From email
-                [settings.ADMIN_EMAIL],      # To (Admin's email)
+            send_mail( 
+                f'From {name}',  # No subject field in the email
+                f'Message: {message}',
+                email,  # Sender's email (from form)
+                [settings.ADMIN_EMAIL],  # Admin email (recipient)
                 fail_silently=False,
             )
 
