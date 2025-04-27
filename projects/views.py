@@ -19,25 +19,16 @@ def index(request):
 
         if name and message and from_email:  # Check if all required fields are present
             try:
-                # Send email with 'name' as the subject and 'message' as the body
-                send_mail(
-                    f"Message from {name}",  # Subject including the sender's name
-                    message,                 # Message body
-                    from_email,              # Sender's email
-                    ["admin@example.com"],   # Admin's email (recipient)
-                )
-                # Success message after email is sent
+                # Send email
+                send_mail(name, message, from_email, ["admin@example.com"])
                 messages.success(request, 'Your message has been successfully sent!')
-                return redirect('index')  # Redirect to avoid form re-submission
-
+                return redirect('index')  # Redirect to index page after sending email
             except BadHeaderError:
                 return HttpResponse("Invalid header found.")
         else:
             return HttpResponse("Make sure all fields are entered and valid.")
     
     return render(request, 'projects/project/index.html', {'projects': projects, 'form': form})
-
-
 
 def details(request, pk):
     project = get_object_or_404(Project, pk=pk)
