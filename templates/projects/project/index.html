@@ -245,7 +245,7 @@
     <div class="contact-content">
         <div class="contact-form-container">
             <h1 class="greet-heading">Get In Touch</h1>
-           <form class="contact-form" method="post" novalidate>
+		<form class="contact-form" method="post" novalidate>
     {% csrf_token %}
 
     {{ form.non_field_errors }}
@@ -291,6 +291,7 @@
         </div>
     {% endif %}
 </form>
+          
             
         </div>
         <div class="contact-details">
