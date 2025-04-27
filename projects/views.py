@@ -4,30 +4,37 @@ from projects.forms import ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import BadHeaderError
+from django.http import HttpResponse
 
 def index(request):
     projects = Project.objects.all()
     form = ContactForm()
 
     if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            message = form.cleaned_data['message']
+        # Retrieve form fields
+        name = request.POST.get("name", "")
+        message = request.POST.get("message", "")
+        from_email = request.POST.get("from_email", "")
 
-            # Send email
-            send_mail( 
-                f'From {name}',  # No subject field in the email
-                f'Message: {message}',
-                email,  # Sender's email (from form)
-                [settings.ADMIN_EMAIL],  # Admin email (recipient)
-                fail_silently=False,
-            )
+        if name and message and from_email:  # Check if all required fields are present
+            try:
+                # Send email with 'name' as the subject and 'message' as the body
+                send_mail(
+                    f"Message from {name}",  # Subject including the sender's name
+                    message,                 # Message body
+                    from_email,              # Sender's email
+                    ["admin@example.com"],   # Admin's email (recipient)
+                )
+                # Success message after email is sent
+                messages.success(request, 'Your message has been successfully sent!')
+                return redirect('index')  # Redirect to avoid form re-submission
 
-            messages.success(request, 'Your message has been successfully sent!')
-            return redirect('index')  # prevent form re-submission
-
+            except BadHeaderError:
+                return HttpResponse("Invalid header found.")
+        else:
+            return HttpResponse("Make sure all fields are entered and valid.")
+    
     return render(request, 'projects/project/index.html', {'projects': projects, 'form': form})
 
 
