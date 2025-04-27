@@ -4,7 +4,7 @@ from projects.forms import ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
-from django.core.mail import BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponse
 
 def index(request):
@@ -12,22 +12,25 @@ def index(request):
     form = ContactForm()
 
     if request.method == 'POST':
-        # Retrieve form fields
-        name = request.POST.get("name", "")
-        message = request.POST.get("message", "")
-        from_email = request.POST.get("from_email", "")
-
-        if name and message and from_email:  # Check if all required fields are present
+        form = ContactForm(request.POST)
+        
+        # Validate the form
+        if form.is_valid():
+            # Retrieve form fields
+            name = form.cleaned_data['name']
+            message = form.cleaned_data['message']
+            from_email = form.cleaned_data['email']
+            
             try:
                 # Send email
-                send_mail(name, message, from_email, ["admin@example.com"])
+                send_mail(f'Message from {name}', message, from_email, ["admin@example.com"])
                 messages.success(request, 'Your message has been successfully sent!')
-                return redirect('index')  # Redirect to index page after sending email
+                return redirect('index')  # Redirect to prevent form resubmission
             except BadHeaderError:
                 return HttpResponse("Invalid header found.")
         else:
-            return HttpResponse("Make sure all fields are entered and valid.")
-    
+            messages.error(request, "Make sure all fields are entered and valid.")
+
     return render(request, 'projects/project/index.html', {'projects': projects, 'form': form})
 
 def details(request, pk):
