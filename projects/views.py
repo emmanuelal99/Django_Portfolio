@@ -4,7 +4,7 @@ from projects.forms import ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import BadHeaderError
+from django.core.mail import BadHeaderError
 from django.http import HttpResponse
 
 def index(request):
